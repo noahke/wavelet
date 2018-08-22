@@ -11,7 +11,7 @@ package org.ciakraa.wavelet.event;
  *
  * @see <a href="https://beta.developer.spotify.com/documentation/web-api/reference/player/get-recently-played/">Spotify Web API: Recently Played</a>
  */
-public class ListenedTrack extends UserEvent {
+public final class ListenedTrack extends UserEvent {
 
     // Key is userId + trackId + timestamp, e.g. "user-100-1528060487"
     private String key;
@@ -39,7 +39,9 @@ public class ListenedTrack extends UserEvent {
     private int timeSignature;
     private double valence;
 
-    public ListenedTrack() {}
+    public ListenedTrack() {
+        // Empty constructor for Flink
+    }
 
     public final String getKey() {
         return key;

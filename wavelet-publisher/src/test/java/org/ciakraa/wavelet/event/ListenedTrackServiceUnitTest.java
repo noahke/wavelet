@@ -1,6 +1,6 @@
-package org.ciakraa.wavelet.event.spring;
+package org.ciakraa.wavelet.event;
 
-import org.ciakraa.wavelet.event.ListenedTrack;
+import org.ciakraa.wavelet.common.CommonUnitTest;
 import org.ciakraa.wavelet.web_api.SpotifyActivityService;
 import org.ciakraa.wavelet.web_api.SpotifyUnauthorizedException;
 import org.junit.Before;
@@ -18,8 +18,11 @@ import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
+import static org.ciakraa.wavelet.event.EventConstants.*;
+import static org.ciakraa.wavelet.common.CommonTestConstants.*;
 
-public final class DefaultEventServiceUnitTest extends AbstractEventUnitTest {
+
+public final class ListenedTrackServiceUnitTest extends CommonUnitTest {
 
     @Mock
     private SpotifyActivityService activityService;
@@ -30,14 +33,14 @@ public final class DefaultEventServiceUnitTest extends AbstractEventUnitTest {
     @Mock
     private BoundZSetOperations trackCache;
 
-    private DefaultEventService target;
+    private ListenedTrackService target;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         mockRedis();
 
-        target = new DefaultEventService(activityService, redis);
+        target = new ListenedTrackService(activityService, redis);
     }
 
     @Test
@@ -79,8 +82,8 @@ public final class DefaultEventServiceUnitTest extends AbstractEventUnitTest {
         when(activityService.getRecentlyListened(userCred, POLL_COUNT)).thenReturn(getPlayHistories());
         when(activityService.getAudioFeatures(userCred, Arrays.asList(TRACK_ONE_ID, TRACK_TWO_ID))).thenReturn(getAudioFeatures());
 
-        String trackOneKey =  DefaultEventService.getListenedTrackKey(getPlayHistories().get(0), userCred);
-        String trackTwoKey =  DefaultEventService.getListenedTrackKey(getPlayHistories().get(1), userCred);
+        String trackOneKey =  ListenedTrackService.getListenedTrackKey(getPlayHistories().get(0), userCred);
+        String trackTwoKey =  ListenedTrackService.getListenedTrackKey(getPlayHistories().get(1), userCred);
         when(trackCache.range(0, -1)).thenReturn(new HashSet<>(Arrays.asList(trackOneKey, trackTwoKey)));
 
         List<ListenedTrack> tracks = target.getUniqueRecentlyListened(userCred, POLL_COUNT);

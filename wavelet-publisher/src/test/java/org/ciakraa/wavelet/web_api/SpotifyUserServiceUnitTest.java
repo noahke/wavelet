@@ -1,6 +1,5 @@
-package org.ciakraa.wavelet.web_api.spring;
+package org.ciakraa.wavelet.web_api;
 
-import org.ciakraa.wavelet.web_api.SpotifyUserCredentials;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.redis.core.BoundHashOperations;
@@ -9,16 +8,18 @@ import org.springframework.data.redis.hash.Jackson2HashMapper;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 import static java.util.Collections.emptyMap;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.assertj.core.api.Assertions.assertThatNullPointerException;
+import static org.assertj.core.api.Assertions.*;
+import static org.ciakraa.wavelet.common.CommonTestConstants.USER_ID;
+import static org.ciakraa.wavelet.web_api.WebApiConstants.USERS_KEY;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class DefaultSpotifyUserServiceUnitTest extends AbstractWebApiUnitTest {
+public class SpotifyUserServiceUnitTest extends AbstractWebApiUnitTest {
 
     @Mock
     private RedisOperations<String, Object> redis;
@@ -26,14 +27,14 @@ public class DefaultSpotifyUserServiceUnitTest extends AbstractWebApiUnitTest {
     @Mock
     private BoundHashOperations<String, Object, Object> users;
 
-    private DefaultSpotifyUserService target;
+    private SpotifyUserService target;
 
     @BeforeMethod
     void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         mockRedis();
 
-        target = new DefaultSpotifyUserService(redis);
+        target = new SpotifyUserService(redis);
     }
 
     @Test

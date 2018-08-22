@@ -1,12 +1,10 @@
 package org.ciakraa.wavelet.ui;
 
 import org.ciakraa.wavelet.event.ListenedTrack;
-import org.ciakraa.wavelet.event.PollService;
+import org.ciakraa.wavelet.event.ListenedTrackPollService;
 import org.ciakraa.wavelet.web_api.SpotifyAuthorizationService;
 import org.ciakraa.wavelet.web_api.SpotifyUnauthorizedException;
 import org.ciakraa.wavelet.web_api.SpotifyUserCredentials;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,18 +20,16 @@ import java.util.Optional;
  */
 @Controller
 @RequestMapping(value = "/wavelet")
-class SpringUiController {
-
-    private static final Logger LOG = LoggerFactory.getLogger(SpringUiController.class);
+final class SpringUiController {
 
     private final SpotifyAuthorizationService authService;
     private final URI redirectUri;
     private final String userScopes;
-    private final PollService pollService;
+    private final ListenedTrackPollService pollService;
 
     @Autowired
-    public SpringUiController(SpotifyAuthorizationService authService, URI redirectUri, String userScopes,
-                              PollService pollService) {
+    SpringUiController(SpotifyAuthorizationService authService, URI redirectUri, String userScopes,
+                              ListenedTrackPollService pollService) {
         this.authService = authService;
         this.redirectUri = redirectUri;
         this.userScopes = userScopes;
@@ -45,7 +41,7 @@ class SpringUiController {
      */
     @GetMapping(value = "/")
     public String home(Model model) {
-        authService.requestAuthorizationUri(redirectUri, userScopes).map(authUri -> model.addAttribute("authUri", authUri));
+        authService.requestAuthorizationUri(redirectUri, userScopes).ifPresent(authUri -> model.addAttribute("authUri", authUri));
         return "home";
     }
 

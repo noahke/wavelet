@@ -7,7 +7,7 @@ import java.util.Collection;
  *
  * @param <T>
  */
-public interface EventPublisher<T extends UserEvent> {
+public interface UserEventPublisher<T extends UserEvent> {
 
     void publish(Collection<T> events);
 }

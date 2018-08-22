@@ -1,4 +1,4 @@
-Wavelet is an event-streaming application for Spotify activity.
+<b>Wavelet</b> is an event-streaming application for Spotify activity.
 
 When a user registers for Wavelet via Spotify, <b>Wavelet-Publisher</b> will poll Spotify for the user's recently listened tracks every 10 minutes, along with the quantitative audio features for each track. The track and feature data are then published to an Apache Kafka topic.
 

@@ -1,12 +1,9 @@
-package org.ciakraa.wavelet.web_api.spring;
+package org.ciakraa.wavelet.web_api;
 
 import com.wrapper.spotify.exceptions.SpotifyWebApiException;
 import com.wrapper.spotify.exceptions.detailed.TooManyRequestsException;
 import com.wrapper.spotify.exceptions.detailed.UnauthorizedException;
 import com.wrapper.spotify.requests.data.users_profile.GetCurrentUsersProfileRequest;
-import org.ciakraa.wavelet.web_api.SpotifyUnauthorizedException;
-import org.ciakraa.wavelet.web_api.SpotifyUserCredentials;
-import org.ciakraa.wavelet.web_api.SpotifyUserService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -26,6 +23,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.ciakraa.wavelet.common.CommonTestConstants.*;
+import static org.ciakraa.wavelet.web_api.WebApiConstants.*;
 
 /**
  * In this class, you'll see a lot of builders from the Spotify Web API Java library being intercepted via mockito.
@@ -33,11 +32,11 @@ import static org.mockito.Mockito.when;
  * Each test's strategy is roughly the same: let the library do it's thing unimpeded,
  * but slip in a mocked HTTP manager or request object so we can ensure the logic is executing correctly.
  *
- * Because {@link DefaultAuthorizationService} uses {@link SpotifyApiFactory} for
+ * Because {@link SpotifyAuthorizationService} uses {@link SpotifyApiFactory} for
  * building the library's request objects, this mocking is fairly straightforward (otherwise, we couldn't unit test),
  * though having to intercept multiple requests in a single test is a bit cumbersome.
  */
-public final class DefaultAuthorizationServiceUnitTest extends AbstractWebApiMockRequestUnitTest {
+public final class SpotifyAuthorizationServiceUnitTest extends AbstractWebApiMockRequestUnitTest {
 
     @Mock
     private SpotifyUserService userService;
@@ -48,7 +47,7 @@ public final class DefaultAuthorizationServiceUnitTest extends AbstractWebApiMoc
     @Mock
     private BoundSetOperations<String, Object> states;
 
-    private DefaultAuthorizationService target;
+    private SpotifyAuthorizationService target;
 
     @Before
     public void setUp() throws Exception {
@@ -56,7 +55,7 @@ public final class DefaultAuthorizationServiceUnitTest extends AbstractWebApiMoc
         mockRequests();
         mockRedis();
 
-        target = new DefaultAuthorizationService(getClientCred(), apiFactory, redis, userService);
+        target = new SpotifyAuthorizationService(getClientCred(), apiFactory, redis, userService);
     }
 
     @Test

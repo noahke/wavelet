@@ -1,10 +1,9 @@
-package org.ciakraa.wavelet.web_api.spring;
+package org.ciakraa.wavelet.web_api;
 
 import com.wrapper.spotify.IHttpManager;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
-import org.ciakraa.wavelet.web_api.SpotifyClientCredentials;
-import org.ciakraa.wavelet.web_api.SpotifyUserCredentials;
+import org.ciakraa.wavelet.common.CommonUnitTest;
 
 import java.io.*;
 import java.net.URI;
@@ -12,6 +11,7 @@ import java.net.URI;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.ciakraa.wavelet.common.CommonTestConstants.*;
 
 /**
  * Simple abstract class to provide common functionality to unit tests.
@@ -19,14 +19,14 @@ import static org.mockito.Mockito.when;
  * Test data and a few util methods courtesy of the Spotify Web API Java library.
  * @see <a href="https://github.com/thelinmichael/spotify-web-api-java/tree/master/examples">Spotify Web API Java: Examples</a>
  */
-abstract class AbstractWebApiUnitTest implements WebApiTestConstants {
+abstract class AbstractWebApiUnitTest extends CommonUnitTest {
 
     SpotifyClientCredentials getClientCred() {
-        return new DefaultSpotifyClientCredentials(CLIENT_ID, CLIENT_SECRET);
+        return new SpotifyClientCredentials(CLIENT_ID, CLIENT_SECRET);
     }
 
     SpotifyUserCredentials getUserCred() {
-        return new DefaultSpotifyUserCredentials.Builder()
+        return new SpotifyUserCredentials.Builder()
                 .setClientCred(getClientCred())
                 .setUserId(USER_ID)
                 .setUserDisplayName(USER_DISPLAY_NAME)

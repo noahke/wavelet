@@ -1,7 +1,6 @@
 package org.ciakraa.wavelet;
 
-import org.ciakraa.wavelet.event.ListenedTrack;
-import org.ciakraa.wavelet.event.PollService;
+import org.ciakraa.wavelet.event.ListenedTrackPollService;
 import org.ciakraa.wavelet.web_api.SpotifyUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,10 +16,10 @@ public class Runner implements CommandLineRunner {
     private static final Logger LOG = LoggerFactory.getLogger(Runner.class);
 
     private final SpotifyUserService userService;
-    private final PollService<ListenedTrack> listenedTrackPollService;
+    private final ListenedTrackPollService listenedTrackPollService;
 
     @Autowired
-    public Runner(SpotifyUserService userService, PollService<ListenedTrack> listenedTrackPollService) {
+    public Runner(SpotifyUserService userService, ListenedTrackPollService listenedTrackPollService) {
         this.userService = userService;
         this.listenedTrackPollService = listenedTrackPollService;
     }

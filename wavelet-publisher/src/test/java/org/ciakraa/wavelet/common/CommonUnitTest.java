@@ -17,6 +17,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
+import static org.ciakraa.wavelet.common.CommonTestConstants.*;
 
 /**
  * Simple abstract class to provide common functionality to unit tests.
@@ -24,7 +25,7 @@ import static org.assertj.core.api.Assertions.fail;
  * Test data and a few util methods courtesy of the Spotify Web API Java library.
  * @see <a href="https://github.com/thelinmichael/spotify-web-api-java/tree/master/examples">Spotify Web API Java: Examples</a>
  */
-public abstract class CommonUnitTest implements CommonTestConstants {
+public abstract class CommonUnitTest {
 
     @Mock
     protected SpotifyUserCredentials userCred;

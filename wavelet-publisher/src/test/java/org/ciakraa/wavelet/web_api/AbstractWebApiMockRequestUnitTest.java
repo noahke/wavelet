@@ -1,4 +1,4 @@
-package org.ciakraa.wavelet.web_api.spring;
+package org.ciakraa.wavelet.web_api;
 
 import com.wrapper.spotify.SpotifyApi;
 import com.wrapper.spotify.requests.authorization.authorization_code.AuthorizationCodeRefreshRequest;
@@ -9,6 +9,7 @@ import com.wrapper.spotify.requests.data.tracks.GetAudioFeaturesForSeveralTracks
 import com.wrapper.spotify.requests.data.users_profile.GetCurrentUsersProfileRequest;
 import org.mockito.Mock;
 
+import static org.ciakraa.wavelet.common.CommonTestConstants.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 

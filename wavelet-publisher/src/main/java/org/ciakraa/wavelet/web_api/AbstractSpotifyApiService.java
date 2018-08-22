@@ -1,9 +1,8 @@
-package org.ciakraa.wavelet.web_api.spring;
+package org.ciakraa.wavelet.web_api;
 
 import com.wrapper.spotify.exceptions.SpotifyWebApiException;
 import com.wrapper.spotify.exceptions.detailed.TooManyRequestsException;
 import com.wrapper.spotify.exceptions.detailed.UnauthorizedException;
-import org.ciakraa.wavelet.web_api.SpotifyUnauthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +14,7 @@ import java.util.concurrent.TimeUnit;
  * Abstract class to support any services that rely on querying Spotify API.
  * Mainly concerned with exception handling.
  */
-abstract class AbstractSpotifyApiService implements WebApiConstants {
+abstract class AbstractSpotifyApiService {
 
     private static final Logger LOG = LoggerFactory.getLogger(AbstractSpotifyApiService.class);
 
@@ -64,7 +63,8 @@ abstract class AbstractSpotifyApiService implements WebApiConstants {
         try {
             TimeUnit.SECONDS.sleep(retryAfter);
         } catch (InterruptedException exp) {
-            LOG.error("Spotify retry with access failed due to exception:", exp);
+            LOG.error("Spotify retry interrupted", exp);
+            Thread.currentThread().interrupt();
         }
         return executeWithAccess(supplier, --retries);
     }
@@ -98,7 +98,8 @@ abstract class AbstractSpotifyApiService implements WebApiConstants {
         try {
             TimeUnit.SECONDS.sleep(retryAfter);
         } catch (InterruptedException exp) {
-            LOG.error("Spotify retry with access failed due to exception:", exp);
+            LOG.error("Spotify retry interrupted", exp);
+            Thread.currentThread().interrupt();
         }
         return executeWithoutAccess(supplier, --retries);
     }

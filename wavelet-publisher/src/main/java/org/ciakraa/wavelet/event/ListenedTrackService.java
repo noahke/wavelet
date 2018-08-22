@@ -1,10 +1,8 @@
-package org.ciakraa.wavelet.event.spring;
+package org.ciakraa.wavelet.event;
 
 import com.wrapper.spotify.model_objects.specification.AudioFeatures;
 import com.wrapper.spotify.model_objects.specification.PlayHistory;
 import com.wrapper.spotify.model_objects.specification.TrackSimplified;
-import org.ciakraa.wavelet.event.EventService;
-import org.ciakraa.wavelet.event.ListenedTrack;
 import org.ciakraa.wavelet.web_api.SpotifyActivityService;
 import org.ciakraa.wavelet.web_api.SpotifyUnauthorizedException;
 import org.ciakraa.wavelet.web_api.SpotifyUserCredentials;
@@ -29,22 +27,31 @@ import static java.util.stream.Collectors.toMap;
 import static java.util.stream.Collectors.toSet;
 
 /**
- * This service will fetch events from Spotify via {@link SpotifyActivityService}.
+ * This service will fetch {@link UserEvent} from Spotify via {@link SpotifyActivityService}.
  * Redis caches are used to guarantee unique events, as Spotify queries can return the same event multiple times.
  */
 @Service
-final class DefaultEventService implements EventService, EventConstants {
+public class ListenedTrackService {
 
     private final SpotifyActivityService activityService;
     private final RedisOperations<String, Object> redis;
 
     @Autowired
-    DefaultEventService(SpotifyActivityService activityService, RedisOperations<String, Object> redis) {
+    ListenedTrackService(SpotifyActivityService activityService, RedisOperations<String, Object> redis) {
         this.activityService = activityService;
         this.redis = redis;
     }
 
-    @Override
+    /**
+     * Retrieves the n latest {@link ListenedTrack} for a given Spotify user.
+     *
+     * Only new events are fetched; if we have already seen an event (thanks to previous polling), we will not
+     * return it again.
+     *
+     * @param userCredentials
+     * @param count
+     * @return
+     */
     public List<ListenedTrack> getUniqueRecentlyListened(SpotifyUserCredentials userCred, int count) {
         List<PlayHistory> plays = getPlays(userCred, count);
         if (plays.isEmpty()) {
@@ -141,8 +148,8 @@ final class DefaultEventService implements EventService, EventConstants {
      */
     private void updateCache(List<ListenedTrack> tracks, SpotifyUserCredentials userCred) {
         BoundZSetOperations userCache = redis.boundZSetOps(getTrackCacheKey(userCred));
-        if (userCache.zCard() == MAX_RECENTLY_LISTENED_TO) {
-            userCache.removeRange(0, tracks.size() - 1);
+        if (userCache.zCard() == EventConstants.MAX_RECENTLY_LISTENED_TO) {
+            userCache.removeRange(0L, tracks.size() - 1L);
         }
 
         for (ListenedTrack track : tracks) {
@@ -155,7 +162,7 @@ final class DefaultEventService implements EventService, EventConstants {
     }
 
     static String getTrackCacheKey(SpotifyUserCredentials userCred) {
-        return RECENTLY_LISTENED_KEY_PREFIX + userCred.getUserId();
+        return EventConstants.RECENTLY_LISTENED_KEY_PREFIX + userCred.getUserId();
     }
     
     static long getTimestamp(Date date) {

@@ -1,8 +1,5 @@
-package org.ciakraa.wavelet.event.spring;
+package org.ciakraa.wavelet.event;
 
-import org.ciakraa.wavelet.event.EventService;
-import org.ciakraa.wavelet.event.ListenedTrack;
-import org.ciakraa.wavelet.event.EventPublisher;
 import org.ciakraa.wavelet.web_api.SpotifyAuthorizationService;
 import org.ciakraa.wavelet.web_api.SpotifyUnauthorizedException;
 import org.ciakraa.wavelet.web_api.SpotifyUserCredentials;
@@ -17,18 +14,18 @@ import java.util.List;
  *
  * User credentials are refreshed with each poll to guarantee access to Spotify Web API.
  */
-final class ListenedTrackPoll implements Runnable, EventConstants {
+final class ListenedTrackPoll implements Runnable {
 
     private static final Logger LOG = LoggerFactory.getLogger(ListenedTrackPollService.class);
 
-    private final EventService eventService;
-    private final EventPublisher<ListenedTrack> eventPublisher;
+    private final ListenedTrackService listenedTrackService;
+    private final UserEventPublisher<ListenedTrack> eventPublisher;
     private final SpotifyAuthorizationService authService;
 
     private SpotifyUserCredentials userCred;
 
     ListenedTrackPoll(Builder builder) {
-        this.eventService = builder.eventService;
+        this.listenedTrackService = builder.listenedTrackService;
         this.authService = builder.authService;
         this.eventPublisher = builder.eventPublisher;
         this.userCred = builder.userCred;
@@ -45,7 +42,7 @@ final class ListenedTrackPoll implements Runnable, EventConstants {
             return;
         }
 
-        List<ListenedTrack> tracks = eventService.getUniqueRecentlyListened(userCred, POLL_COUNT);
+        List<ListenedTrack> tracks = listenedTrackService.getUniqueRecentlyListened(userCred, EventConstants.POLL_COUNT);
         if (tracks.isEmpty()) {
             return;
         }
@@ -54,13 +51,13 @@ final class ListenedTrackPoll implements Runnable, EventConstants {
     }
 
     static final class Builder {
-        private EventService eventService;
+        private ListenedTrackService listenedTrackService;
         private SpotifyAuthorizationService authService;
-        private EventPublisher<ListenedTrack> eventPublisher;
+        private UserEventPublisher<ListenedTrack> eventPublisher;
         private SpotifyUserCredentials userCred;
 
-        public Builder setEventService(EventService eventService) {
-            this.eventService = eventService;
+        public Builder setListenedTrackService(ListenedTrackService listenedTrackService) {
+            this.listenedTrackService = listenedTrackService;
             return this;
         }
 
@@ -69,7 +66,7 @@ final class ListenedTrackPoll implements Runnable, EventConstants {
             return this;
         }
 
-        public Builder setEventPublisher(EventPublisher<ListenedTrack> eventPublisher) {
+        public Builder setEventPublisher(UserEventPublisher<ListenedTrack> eventPublisher) {
             this.eventPublisher = eventPublisher;
             return this;
         }

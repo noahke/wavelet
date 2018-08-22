@@ -1,8 +1,5 @@
-package org.ciakraa.wavelet.web_api.spring;
+package org.ciakraa.wavelet.web_api;
 
-import org.ciakraa.wavelet.web_api.SpotifyClientCredentials;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,8 +15,6 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @EnableRedisRepositories
 class WebApiConfig {
 
-    private static final Logger LOG = LoggerFactory.getLogger(WebApiConfig.class);
-
     @Value("${spotify.clientId}")
     private String clientId;
 
@@ -34,7 +29,7 @@ class WebApiConfig {
 
     @Bean
     SpotifyClientCredentials clientCred() {
-        return new DefaultSpotifyClientCredentials(clientId, clientSecret);
+        return new SpotifyClientCredentials(clientId, clientSecret);
     }
 
     @Bean

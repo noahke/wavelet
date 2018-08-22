@@ -1,6 +1,5 @@
-package org.ciakraa.wavelet.event.spring;
+package org.ciakraa.wavelet.event;
 
-import org.ciakraa.wavelet.common.CommonTestConstants;
 import org.ciakraa.wavelet.common.CommonUnitTest;
 import org.ciakraa.wavelet.web_api.SpotifyClientCredentials;
 import org.ciakraa.wavelet.web_api.SpotifyUserCredentials;
@@ -13,12 +12,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.ciakraa.wavelet.common.CommonTestConstants.*;
 
 @SpringBootTest
 @Profile("integration")
 @RunWith(SpringRunner.class)
 @TestPropertySource(locations="classpath:test.properties")
-public abstract class AbstractEventIntegrationTest extends CommonUnitTest implements CommonTestConstants, EventConstants {
+abstract class AbstractEventIntegrationTest extends CommonUnitTest {
 
     @Autowired
     SpotifyClientCredentials clientCred;

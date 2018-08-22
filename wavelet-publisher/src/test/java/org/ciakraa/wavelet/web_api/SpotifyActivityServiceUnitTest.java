@@ -1,11 +1,9 @@
-package org.ciakraa.wavelet.web_api.spring;
+package org.ciakraa.wavelet.web_api;
 
 import com.wrapper.spotify.exceptions.SpotifyWebApiException;
 import com.wrapper.spotify.exceptions.detailed.UnauthorizedException;
 import com.wrapper.spotify.model_objects.specification.AudioFeatures;
 import com.wrapper.spotify.model_objects.specification.PlayHistory;
-import org.ciakraa.wavelet.web_api.SpotifyUnauthorizedException;
-import org.ciakraa.wavelet.web_api.SpotifyUserCredentials;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.MockitoAnnotations;
@@ -17,15 +15,17 @@ import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.ciakraa.wavelet.common.CommonTestConstants.*;
+import static org.ciakraa.wavelet.web_api.WebApiConstants.*;
 
-public final class DefaultActivityServiceUnitTest extends AbstractWebApiMockRequestUnitTest {
+public final class SpotifyActivityServiceUnitTest extends AbstractWebApiMockRequestUnitTest {
 
-    private DefaultActivityService target;
+    private SpotifyActivityService target;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        target = new DefaultActivityService(apiFactory);
+        target = new SpotifyActivityService(apiFactory);
 
         mockRequests();
     }

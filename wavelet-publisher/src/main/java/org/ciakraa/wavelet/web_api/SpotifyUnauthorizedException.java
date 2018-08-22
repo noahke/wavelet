@@ -8,7 +8,7 @@ import org.apache.http.HttpException;
  *
  * @see <a href="https://beta.developer.spotify.com/documentation/web-api/#response-status-codes">Spotify API: Response Codes</a>
  */
-public final class SpotifyUnauthorizedException extends HttpException {
+public class SpotifyUnauthorizedException extends HttpException {
 
     public SpotifyUnauthorizedException() {
         super();

@@ -1,8 +1,6 @@
-package org.ciakraa.wavelet.event.spring;
+package org.ciakraa.wavelet.event;
 
-import org.ciakraa.wavelet.event.EventPublisher;
-import org.ciakraa.wavelet.event.EventService;
-import org.ciakraa.wavelet.event.ListenedTrack;
+import org.ciakraa.wavelet.common.CommonUnitTest;
 import org.ciakraa.wavelet.web_api.SpotifyAuthorizationService;
 import org.ciakraa.wavelet.web_api.SpotifyUnauthorizedException;
 import org.junit.Before;
@@ -17,18 +15,19 @@ import java.util.Optional;
 
 import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.ciakraa.wavelet.event.EventConstants.POLL_COUNT;
 import static org.mockito.Mockito.when;
 
-public final class ListenedTrackPollUnitTest extends AbstractEventUnitTest {
+public final class ListenedTrackPollUnitTest extends CommonUnitTest {
 
     @Mock
-    private EventService eventService;
+    private ListenedTrackService listenedTrackService;
 
     @Mock
     private SpotifyAuthorizationService authService;
 
     // Manually mock the interface to store tracks from publish(events) in a list that we can verify.
-    private EventPublisher<ListenedTrack> eventPublisher;
+    private UserEventPublisher<ListenedTrack> eventPublisher;
     private List<ListenedTrack> publishedTracks;
 
     private ListenedTrackPoll target;
@@ -38,7 +37,7 @@ public final class ListenedTrackPollUnitTest extends AbstractEventUnitTest {
         MockitoAnnotations.initMocks(this);
 
         publishedTracks = new ArrayList<>();
-        eventPublisher = new EventPublisher<ListenedTrack>() {
+        eventPublisher = new UserEventPublisher<ListenedTrack>() {
             @Override
             public void publish(Collection<ListenedTrack> events) {
                 events.stream().forEach(publishedTracks::add);
@@ -49,7 +48,7 @@ public final class ListenedTrackPollUnitTest extends AbstractEventUnitTest {
                 .setUserCred(userCred)
                 .setAuthService(authService)
                 .setEventPublisher(eventPublisher)
-                .setEventService(eventService)
+                .setListenedTrackService(listenedTrackService)
                 .build();
     }
 
@@ -64,7 +63,7 @@ public final class ListenedTrackPollUnitTest extends AbstractEventUnitTest {
     @Test
     public void shouldPublishNothingWhenNoTracksAreReturned() throws SpotifyUnauthorizedException {
         when(authService.refreshUser(userCred)).thenReturn(Optional.of(userCred));
-        when(eventService.getUniqueRecentlyListened(userCred, POLL_COUNT)).thenReturn(emptyList());
+        when(listenedTrackService.getUniqueRecentlyListened(userCred, POLL_COUNT)).thenReturn(emptyList());
 
         target.run();
         assertThat(publishedTracks).isEmpty();
@@ -73,7 +72,7 @@ public final class ListenedTrackPollUnitTest extends AbstractEventUnitTest {
     @Test
     public void shouldPublishTracks() throws SpotifyUnauthorizedException {
         when(authService.refreshUser(userCred)).thenReturn(Optional.of(userCred));
-        when(eventService.getUniqueRecentlyListened(userCred, POLL_COUNT)).thenReturn(getListenedTracks());
+        when(listenedTrackService.getUniqueRecentlyListened(userCred, POLL_COUNT)).thenReturn(getListenedTracks());
 
         target.run();
         assertListenedTracks(publishedTracks);

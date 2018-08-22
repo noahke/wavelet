@@ -1,6 +1,5 @@
-package org.ciakraa.wavelet.event.spring;
+package org.ciakraa.wavelet.event;
 
-import org.ciakraa.wavelet.event.ListenedTrack;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +13,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
-
+import static org.ciakraa.wavelet.event.EventConstants.*;
+import static org.ciakraa.wavelet.common.CommonTestConstants.*;
 
 /**
  * Make sure kafka is running for this test!
