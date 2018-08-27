@@ -23,7 +23,7 @@ public class SpotifyClientCredentials {
     private final String clientId;
 
     @JsonCreator
-    SpotifyClientCredentials(@JsonProperty("clientId") String clientId, @JsonProperty("clientSecret") String clientSecret) {
+    public SpotifyClientCredentials(@JsonProperty("clientId") String clientId, @JsonProperty("clientSecret") String clientSecret) {
         this.clientId = clientId;
         this.clientSecret = clientSecret;
     }

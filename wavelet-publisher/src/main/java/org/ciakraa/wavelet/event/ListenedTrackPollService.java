@@ -18,7 +18,7 @@ public class ListenedTrackPollService {
     private final ListenedTrackPublisher eventPublisher;
 
     @Autowired
-    ListenedTrackPollService(TaskScheduler taskScheduler, ListenedTrackService userEventService, SpotifyAuthorizationService authService,
+    public ListenedTrackPollService(TaskScheduler taskScheduler, ListenedTrackService userEventService, SpotifyAuthorizationService authService,
                              ListenedTrackPublisher eventPublisher) {
         this.taskScheduler = taskScheduler;
         this.userEventService = userEventService;

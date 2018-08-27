@@ -13,6 +13,34 @@ The app relies on <a href="https://developer.spotify.com/documentation/web-api/"
 
 How does it work? Wavelet creates a poll task for each user and submits it to a <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/scheduling/TaskScheduler.html">Task Scheduler</a> to be executed every 10 minutes. Upon execution, the user's credentials are refreshed via Spotify Web API. Then, separate calls are made to the Spotify Web API to collect the user's Recently Listened Tracks, and each set of quantitative Audio Features for those tracks. After building an event object for each track/features, and checking Redis to filter out any previously seen listened tracks, the new track event is published to Kafka. Simple!
 
+Here is an example of the json posted to Kafka:
+```
+{
+  "userId": "noahke",
+  "userDisplayName": "noahke",
+  "key": "noahke-2X485T9Z5Ly0xyaghN73ed-1481661720",
+  "trackId": "2X485T9Z5Ly0xyaghN73ed",
+  "playedAt": 1481661720,
+  "artistName": "Kraftwerk",
+  "artistId": "5INjqkS1o8h1imAzPqGZBb",
+  "durationMs": 467586,
+  "name": "Autobahn",
+  "previewUrl": "https://p.scdn.co/mp3-preview/05dee1ad0d2a6fa4ad07fbd24ae49d58468e8194",
+  "acousticness": 0.10199999809265137,
+  "danceability": 0.4569999873638153,
+  "energy": 0.8149999976158142,
+  "instrumentalness": 0.03189999982714653,
+  "keySignature": 1,
+  "liveness": 0.10300000011920929,
+  "loudness": -7.198999881744385,
+  "mode": 1,
+  "speechiness": 0.03400000184774399,
+  "tempo": 96.08300018310547,
+  "timeSignature": 4,
+  "valence": 0.38199999928474426
+}
+```
+
 The hearty vegetables of this code can be found in these classes:
 - ListenedTrackPoll: executes the aforementioned code flow every 10 minutes.
 - EventService: fetches the recently listened tracks + audio features, via SpotifyActivityService, and prepares them for Kafka publishing.

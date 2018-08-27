@@ -44,7 +44,7 @@ public class SpotifyAuthorizationService extends AbstractSpotifyApiService {
     private final BoundSetOperations<String, Object> states;
 
     @Autowired
-    SpotifyAuthorizationService(SpotifyClientCredentials clientCred,
+    public SpotifyAuthorizationService(SpotifyClientCredentials clientCred,
                                 SpotifyApiFactory apiFactory,
                                 RedisOperations<String, Object> redis,
                                 SpotifyUserService userService) {

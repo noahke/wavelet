@@ -16,7 +16,7 @@ final class ListenedTrackPublisher implements UserEventPublisher<ListenedTrack> 
     private final KafkaTemplate<String, Object> kafka;
 
     @Autowired
-    ListenedTrackPublisher(KafkaTemplate<String, Object> kafka) {
+    public ListenedTrackPublisher(KafkaTemplate<String, Object> kafka) {
         this.kafka = kafka;
     }
 

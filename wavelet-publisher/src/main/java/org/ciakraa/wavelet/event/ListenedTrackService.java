@@ -37,7 +37,7 @@ public class ListenedTrackService {
     private final RedisOperations<String, Object> redis;
 
     @Autowired
-    ListenedTrackService(SpotifyActivityService activityService, RedisOperations<String, Object> redis) {
+    public ListenedTrackService(SpotifyActivityService activityService, RedisOperations<String, Object> redis) {
         this.activityService = activityService;
         this.redis = redis;
     }
@@ -50,7 +50,7 @@ public class ListenedTrackService {
      *
      * @param userCredentials
      * @param count
-     * @return
+     * @return listenedTracks
      */
     public List<ListenedTrack> getUniqueRecentlyListened(SpotifyUserCredentials userCred, int count) {
         List<PlayHistory> plays = getPlays(userCred, count);

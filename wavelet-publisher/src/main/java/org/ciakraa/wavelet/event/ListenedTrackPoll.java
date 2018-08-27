@@ -24,7 +24,7 @@ final class ListenedTrackPoll implements Runnable {
 
     private SpotifyUserCredentials userCred;
 
-    ListenedTrackPoll(Builder builder) {
+    private ListenedTrackPoll(Builder builder) {
         this.listenedTrackService = builder.listenedTrackService;
         this.authService = builder.authService;
         this.eventPublisher = builder.eventPublisher;

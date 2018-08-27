@@ -31,7 +31,7 @@ public class SpotifyUserService {
     private final Jackson2HashMapper mapper;
 
     @Autowired
-    SpotifyUserService(RedisOperations<String, Object> redis) {
+    public SpotifyUserService(RedisOperations<String, Object> redis) {
         this.users = redis.boundHashOps(WebApiConstants.USERS_KEY);
         this.mapper = new Jackson2HashMapper(false);
     }

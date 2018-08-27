@@ -38,7 +38,7 @@ public class SpotifyActivityService extends AbstractSpotifyApiService {
     private final SpotifyApiFactory apiFactory;
 
     @Autowired
-    SpotifyActivityService(SpotifyApiFactory apiFactory) {
+    public SpotifyActivityService(SpotifyApiFactory apiFactory) {
         this.apiFactory = apiFactory;
     }
 
